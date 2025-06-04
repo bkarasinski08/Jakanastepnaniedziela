@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Niedziela handlowa?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1b1b1f">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0e0e11;
+      font-family: 'Comfortaa', cursive;
+      color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .container {
+      background: #1b1b1f;
+      padding: 40px;
+      border-radius: 30px;
+      box-shadow: 0 0 30px rgba(0, 255, 170, 0.2), 0 0 60px rgba(0, 255, 170, 0.05);
+      max-width: 600px;
+      text-align: center;
+      position: relative;
+    }
+    .led-strip {
+      position: absolute;
+      top: -10px;
+      left: 10%;
+      width: 80%;
+      height: 5px;
+      background: linear-gradient(90deg, #0fffc1, #00b3ff, #0fffc1);
+      background-size: 300% 100%;
+      animation: led-glow 6s linear infinite;
+      border-radius: 10px;
+    }
+    @keyframes led-glow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+    #result {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #0fffc1;
+    }
+    #countdown {
+      margin-top: 25px;
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+    #countdown strong {
+      color: #0fffc1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="led-strip"></div>
+    <h1>Następna niedziela będzie:</h1>
+    <div id="result">...</div>
+    <div id="countdown"></div>
+  </div>
+
+  <script>
+    const tradingSundays = [
+      '2025-01-26',
+      '2025-03-30',
+      '2025-06-29', // Ta data jest dziś!
+      '2025-08-31',
+      '2025-12-14',
+      '2025-12-21',
+      '2025-12-28',
+    ];
+
+    function getNextSunday(date = new Date()) {
+      const day = date.getDay(); 
+      const diff = (7 - day) % 7;
+      const nextSunday = new Date(date);
+      nextSunday.setDate(date.getDate() + diff);
+      nextSunday.setHours(0, 0, 0, 0);
+      return nextSunday;
+    }
+
+    function isTradingSunday(date) {
+      const formatted = date.toISOString().slice(0, 10);
+      return tradingSundays.includes(formatted);
+    }
+
+    function getNextTradingSunday(date = new Date()) {
+      let current = new Date(date);
+      current.setHours(0, 0, 0, 0);
+      while (true) {
+        let nextSundayCandidate = getNextSunday(current);
+        const formatted = nextSundayCandidate.toISOString().slice(0, 10);
+
+        if (tradingSundays.includes(formatted)) {
+            if (nextSundayCandidate.getTime() >= current.getTime()) {
+                 return nextSundayCandidate;
+            }
+        }
+        current.setDate(nextSundayCandidate.getDate() + 1);
+        current.setHours(0,0,0,0);
+      }
+    }
+
+    function updateCountdown(targetDate) {
+      const now = new Date();
+      const totalSeconds = Math.floor((targetDate.getTime() - now.getTime()) / 1000);
+
+      if (totalSeconds <= 0) {
+        document.getElementById('countdown').innerText = "To już dziś! Ruszaj na zakupy!";
+        return;
+      }
+
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      document.getElementById('countdown').innerHTML = 
+        `Do najbliższej <strong>niedzieli handlowej</strong> zostało: 
+        <strong>${days}d</strong> ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    const nextSunday = getNextSunday(today);
+    const isTrading = isTradingSunday(nextSunday);
+    document.getElementById("result").innerText = isTrading ? "HANDLOWA" : "NIEHANDLOWA";
+
+    const nextTrading = getNextTradingSunday(today);
+    updateCountdown(nextTrading);
+    setInterval(() => updateCountdown(nextTrading), 1000);
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(registration => {
+            console.log('Service Worker zarejestrowany:', registration.scope);
+          })
+          .catch(error => {
+            console.log('Błąd rejestracji SW:', error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>
