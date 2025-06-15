@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Niedziela handlowa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0a0a0d;
+      --card-bg: rgba(27, 27, 31, 0.8);
+      --accent: #0fffc1;
+      --text-color: #f0f0f0;
+      --shadow-color: rgba(0, 255, 170, 0.3);
+      --pulse-color: rgba(0, 255, 170, 0.2);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Comfortaa', cursive;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    /* Subtle animated background gradient */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #0a0a0d, #1f1f23, #0a0a0d);
+      background-size: 200% 200%;
+      animation: bg-animation 15s ease infinite;
+      z-index: -2;
+    }
+    @keyframes bg-animation {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
+      100% { background-position: 0% 0%; }
+    }
+    .container {
+      position: relative;
+      background: var(--card-bg);
+      border-radius: 30px;
+      padding: 40px 30px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 0 30px var(--shadow-color), 0 0 60px rgba(0, 255, 170, 0.05);
+      backdrop-filter: blur(10px);
+    }
+    .led-strip {
+      position: absolute;
+      top: -8px;
+      left: 10%;
+      width: 80%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), #00b3ff, var(--accent));
+      background-size: 300% 100%;
+      animation: led-glow 4s linear infinite;
+      border-radius: 10px;
+    }
+    @keyframes led-glow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+    #result {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px var(--accent);
+    }
+    #countdown {
+      margin-top: 15px;
+      font-size: 1rem;
+      color: #ccc;
+    }
+    #countdown strong {
+      color: var(--accent);
+    }
+    /* Pulse animation on accent text */
+    @keyframes pulse {
+      0% { text-shadow: 0 0 5px var(--accent); }
+      50% { text-shadow: 0 0 20px var(--accent); }
+      100% { text-shadow: 0 0 5px var(--accent); }
+    }
+    #result {
+      animation: pulse 2s infinite;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .container {
+        padding: 30px 20px;
+      }
+      h1 { font-size: 1.5rem; }
+      #result { font-size: 2rem; }
+      #countdown { font-size: 0.9rem; }
+    }
+    /* Footer credit (optional) */
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.75rem;
+      color: #555;
+      width: 100%;
+      text-align: center;
+    }
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="led-strip"></div>
+    <h1>Następna niedziela będzie:</h1>
+    <div id="result">...</div>
+    <div id="countdown"></div>
+    <!-- Opcjonalne: stopka z linkiem lub informacją -->
+    <!-- <div class="footer">&copy; 2025 Twoja Strona</div> -->
+  </div>  <script>
+    const tradingSundays = [
+      '2025-01-26',
+      '2025-03-30',
+      '2025-06-29',
+      '2025-08-31',
+      '2025-12-14',
+      '2025-12-21',
+      '2025-12-28',
+    ];
+
+    function getNextSunday(date = new Date()) {
+      const day = date.getDay();
+      const diff = (7 - day) % 7;
+      const nextSunday = new Date(date);
+      nextSunday.setDate(date.getDate() + diff);
+      return nextSunday;
+    }
+
+    function isTradingSunday(date) {
+      const formatted = date.toISOString().slice(0, 10);
+      return tradingSundays.includes(formatted);
+    }
+
+    function getNextTradingSunday(date = new Date()) {
+      let current = new Date(date);
+      while (true) {
+        const nextSunday = getNextSunday(current);
+        const formatted = nextSunday.toISOString().slice(0, 10);
+        if (tradingSundays.includes(formatted)) return nextSunday;
+        // Ustaw current na dzień po sprawdzonej niedzieli
+        current = new Date(nextSunday);
+        current.setDate(nextSunday.getDate() + 1);
+      }
+    }
+
+    function updateCountdown(targetDate) {
+      const now = new Date();
+      const totalSeconds = Math.floor((targetDate - now) / 1000);
+
+      if (totalSeconds <= 0) {
+        document.getElementById('countdown').innerText = "To już dziś!";
+        return;
+      }
+
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      document.getElementById('countdown').innerHTML = 
+        `Do najbliższej <strong>niedzieli handlowej</strong> zostało: 
+        <strong>${days}d</strong> ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    // Inicjalizacja po załadowaniu
+    document.addEventListener('DOMContentLoaded', () => {
+      const nextSunday = getNextSunday();
+      const isTrading = isTradingSunday(nextSunday);
+      document.getElementById('result').innerText = isTrading ? 'HANDLOWA' : 'NIEHANDLOWA';
+
+      const nextTrading = getNextTradingSunday();
+      updateCountdown(nextTrading);
+      setInterval(() => updateCountdown(nextTrading), 1000);
+    });
+  </script></body>
+</html>
