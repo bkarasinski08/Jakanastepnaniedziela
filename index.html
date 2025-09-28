@@ -3,51 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Niedziele Handlowe - Deep Space Tracker</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>Niedziela handlowa</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="background-stars"></div>
   <div class="container">
+    <div class="led-strip"></div>
+    <h1>Następna niedziela będzie:</h1>
+    <div id="result">...</div>
 
-    <header class="header">
-      <div class="logo">Sunday<span class="logo-accent">Tracker</span></div>
-      <p class="header-subtitle">Kiedy zrobisz zakupy? Sprawdź status najbliższej niedzieli.</p>
-    </header>
+    <div id="countdown" class="countdown">
+      <div><span id="days">0</span><label>Dni</label></div>
+      <div><span id="hours">0</span><label>Godziny</label></div>
+      <div><span id="minutes">0</span><label>Minuty</label></div>
+      <div><span id="seconds">0</span><label>Sekundy</label></div>
+    </div>
 
-    <section id="current-status" class="card soft-shadow">
-      <h1 class="card-title">Najbliższa Niedziela: <span id="next-sunday-date" class="date-label"></span></h1>
-      <div id="result" class="status-indicator">...</div>
-      <p id="today-info" class="today-message"></p>
-    </section>
-    
-    <div class="separator-dots"></div>
-
-    <section id="next-trading-info" class="card soft-shadow">
-      <h2 class="card-title">ODLICZANIE: Do najbliższej niedzieli handlowej</h2>
-      <p id="trading-sunday-date" class="date-label large"></p>
-      <div id="countdown" class="countdown-display">
-        <span class="value" id="days-val">0</span><span class="unit"> dni</span>
-        <span class="value" id="hours-val">0</span><span class="unit"> godz</span>
-        <span class="value" id="minutes-val">0</span><span class="unit"> min</span>
-        <span class="value" id="seconds-val">0</span><span class="unit"> sek</span>
-      </div>
-    </section>
-
-    <div class="separator-dots"></div>
-    
-    <section id="trading-calendar" class="card soft-shadow">
-        <h2 class="card-title">Kalendarz Handlowy (2025 - 2030)</h2>
-        <ul id="trading-list" class="date-list">
-          <li>Ładowanie...</li>
-        </ul>
-    </section>
-
-    <footer class="footer">
-      Dane: Zgodnie z przewidywaniami na lata 2025-2030. 
-    </footer>
+    <h2>Lista niedziel handlowych 2025–2030</h2>
+    <div class="sunday-list" id="sundayList"></div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
