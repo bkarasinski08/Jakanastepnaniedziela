@@ -1,201 +1,157 @@
 :root {
-    --bg-dark: #12121c; /* Głęboka Czerń/Granat */
-    --card-dark: #1e1e2c; /* Cieńsze tło kart */
-    --accent-blue: #00e0ff; /* Neonowy Akcent Niebieski */
-    --accent-pink: #ff00c8; /* Neonowy Akcent Różowy */
-    --text-primary: #e0e0e0;
-    --text-secondary: #9aa0a6;
-    
-    /* Cienie Neumorphism */
-    --shadow-light: rgba(255, 255, 255, 0.05); /* Górny/Lewy (jasny) */
-    --shadow-dark: rgba(0, 0, 0, 0.5); /* Dolny/Prawy (ciemny) */
-}
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-body {
-    background-color: var(--bg-dark);
-    color: var(--text-primary);
-    font-family: 'Roboto', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 40px 20px;
-    position: relative;
-    overflow-x: hidden;
+  --bg-color: #0a0a0d;
+  --card-bg: rgba(27, 27, 31, 0.85);
+  --accent: #00ffc6;
+  --text-color: #f0f0f0;
+  --shadow-color: rgba(0, 255, 200, 0.4);
 }
 
-/* Tło z efektem Gwiazd */
-.background-stars {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYGD4DwAASwAFK0mI4AAAAABJRU5ErkJggg=='); /* Minimalne tło */
-    z-index: -1;
-    opacity: 0.15;
-    /* Dodajemy efekt migoczących gwiazd (wizualny) */
-    animation: star-field 180s linear infinite;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-@keyframes star-field {
-    from { background-position: 0 0; }
-    to { background-position: 100% 100%; }
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Comfortaa', cursive;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(45deg, #0a0a0d, #1a1a20, #0a0a0d);
+  background-size: 200% 200%;
+  animation: bg-animation 15s ease infinite;
+  z-index: -1;
+}
+
+@keyframes bg-animation {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
 }
 
 .container {
-    max-width: 550px;
-    width: 100%;
-    z-index: 10;
+  position: relative;
+  background: var(--card-bg);
+  border-radius: 25px;
+  padding: 40px 30px;
+  max-width: 650px;
+  width: 95%;
+  text-align: center;
+  box-shadow: 0 0 25px var(--shadow-color);
+  backdrop-filter: blur(10px);
 }
 
-/* Elementy Soft 3D (Neumorphism) */
-.card {
-    background-color: var(--card-dark);
-    padding: 30px;
-    border-radius: 25px;
-    margin-bottom: 35px;
-    position: relative;
-}
-.soft-shadow {
-    box-shadow: 
-        10px 10px 20px var(--shadow-dark), 
-        -10px -10px 20px var(--shadow-light);
-    transition: all 0.3s ease;
-}
-.soft-shadow:hover {
-    box-shadow: 
-        8px 8px 15px var(--shadow-dark), 
-        -8px -8px 15px var(--shadow-light);
-    transform: translateY(-2px);
+.led-strip {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--accent), #00b3ff, var(--accent));
+  background-size: 300% 100%;
+  animation: led-glow 4s linear infinite;
+  border-radius: 5px;
 }
 
-/* Typografia i Nagłówki */
-.logo {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: var(--text-primary);
-    margin-bottom: 5px;
-}
-.logo-accent {
-    color: var(--accent-pink);
-}
-.header-subtitle {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin-bottom: 30px;
-}
-.card-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--accent-blue);
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+@keyframes led-glow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 
-/* Status i Wyróżnienie */
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
 #result {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 4rem;
-    font-weight: 900;
-    margin-top: 15px;
-    padding: 10px 0;
-    text-shadow: 0 0 10px var(--accent-pink);
-    transition: color 0.5s ease;
-}
-.status-indicator.handlowa {
-    color: var(--accent-blue);
-    animation: neon-glow 1.5s infinite alternate;
-}
-.status-indicator.niehandlowa {
-    color: var(--text-secondary);
-    font-size: 3rem; /* Mniejsza czcionka dla niehandlowej */
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--accent);
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px var(--accent);
+  animation: pulse 2s infinite;
 }
 
-@keyframes neon-glow {
-    from { text-shadow: 0 0 5px var(--accent-blue), 0 0 10px var(--accent-blue); }
-    to { text-shadow: 0 0 15px var(--accent-blue), 0 0 25px var(--accent-pink); }
+@keyframes pulse {
+  0% { text-shadow: 0 0 5px var(--accent); }
+  50% { text-shadow: 0 0 20px var(--accent); }
+  100% { text-shadow: 0 0 5px var(--accent); }
 }
 
-/* Daty i Info */
-.date-label {
-    display: block;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin-bottom: 5px;
-}
-.date-label.large {
-    font-size: 1.1rem;
-    color: var(--text-primary);
-    font-weight: 700;
-}
-.today-message {
-    color: var(--accent-pink);
-    font-style: italic;
-    margin-top: 10px;
-    font-size: 0.9rem;
+/* Countdown style */
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
 }
 
-/* Licznik Czasu (Rozbudowany) */
-.countdown-display {
-    display: flex;
-    justify-content: space-around;
-    align-items: baseline;
-    padding: 15px 0;
-}
-.countdown-display .value {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2.2rem;
-    font-weight: 900;
-    color: var(--accent-pink);
-    display: block;
-    line-height: 1;
-}
-.countdown-display .unit {
-    display: block;
-    font-size: 0.7rem;
-    color: var(--text-secondary);
-    margin-top: 5px;
+.countdown div {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 12px;
+  min-width: 70px;
+  box-shadow: inset 0 0 10px rgba(0, 255, 200, 0.2);
 }
 
-/* Lista Kalendarza */
-.date-list {
-    list-style: none;
-    text-align: left;
-    max-height: 300px;
-    overflow-y: auto;
-    padding-right: 15px; /* Przestrzeń na scrollbar */
-}
-.date-list li {
-    padding: 8px 10px;
-    border-bottom: 1px solid var(--shadow-dark);
-    font-size: 0.95rem;
-    display: flex;
-    justify-content: space-between;
-}
-.date-list li:last-child {
-    border-bottom: none;
-}
-.date-list li strong {
-    color: var(--accent-blue);
-    font-weight: 700;
+.countdown span {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--accent);
+  display: block;
 }
 
-/* Separator */
-.separator-dots {
-    display: flex;
-    justify-content: center;
-    margin: 25px 0;
+.countdown label {
+  font-size: 0.8rem;
+  color: #aaa;
 }
-.separator-dots::before, .separator-dots::after {
-    content: '•';
-    color: var(--text-secondary);
-    font-size: 1.5rem;
-    opacity: 0.3;
-    padding: 0 5px;
+
+/* Sunday list */
+h2 {
+  margin: 20px 0 10px;
+  font-size: 1.3rem;
+  color: var(--accent);
 }
+
+.sunday-list {
+  max-height: 200px;
+  overflow-y: auto;
+  text-align: left;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: inset 0 0 5px rgba(0, 255, 200, 0.1);
+}
+
+.sunday-list ul {
+  list-style: none;
+  padding-left: 10px;
+}
+
+.sunday-list li {
+  padding: 4px 0;
+  font-size: 0.95rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.sunday-list li:last-child {
+  border-bottom: none;
+}
+
+/* Responsywność */
+@media (max-width: 480px) {
+  #result { font-size: 2rem; }
+  .countdown { gap: 10px; }
+  .countdown div { min-width: 55px; padding: 10px; }
+    }
