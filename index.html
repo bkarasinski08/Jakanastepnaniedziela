@@ -3,28 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Niedziela Handlowa - Minimalistyczny Kalendarz</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
+  <title>Niedziele Handlowe - Deep Space Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="background-stars"></div>
   <div class="container">
-    <section id="current-status" class="glass-card">
-      <h1>Status najbliższej niedzieli</h1>
-      <p id="next-sunday-date" class="date-info"></p>
-      <div id="result">...</div>
+
+    <header class="header">
+      <div class="logo">Sunday<span class="logo-accent">Tracker</span></div>
+      <p class="header-subtitle">Kiedy zrobisz zakupy? Sprawdź status najbliższej niedzieli.</p>
+    </header>
+
+    <section id="current-status" class="card soft-shadow">
+      <h1 class="card-title">Najbliższa Niedziela: <span id="next-sunday-date" class="date-label"></span></h1>
+      <div id="result" class="status-indicator">...</div>
+      <p id="today-info" class="today-message"></p>
     </section>
     
-    <hr class="divider">
+    <div class="separator-dots"></div>
 
-    <section id="next-trading-info" class="glass-card">
-      <h2>Do najbliższej niedzieli handlowej:</h2>
-      <p id="trading-sunday-date" class="date-info"></p>
-      <div id="countdown"></div>
+    <section id="next-trading-info" class="card soft-shadow">
+      <h2 class="card-title">ODLICZANIE: Do najbliższej niedzieli handlowej</h2>
+      <p id="trading-sunday-date" class="date-label large"></p>
+      <div id="countdown" class="countdown-display">
+        <span class="value" id="days-val">0</span><span class="unit"> dni</span>
+        <span class="value" id="hours-val">0</span><span class="unit"> godz</span>
+        <span class="value" id="minutes-val">0</span><span class="unit"> min</span>
+        <span class="value" id="seconds-val">0</span><span class="unit"> sek</span>
+      </div>
+    </section>
+
+    <div class="separator-dots"></div>
+    
+    <section id="trading-calendar" class="card soft-shadow">
+        <h2 class="card-title">Kalendarz Handlowy (2025 - 2030)</h2>
+        <ul id="trading-list" class="date-list">
+          <li>Ładowanie...</li>
+        </ul>
     </section>
 
     <footer class="footer">
-      <a href="https://www.gov.pl/web/rozwoj/ograniczenie-handlu-w-niedziele-i-swieta" target="_blank">Źródło i zasady (gov.pl)</a>
+      Dane: Zgodnie z przewidywaniami na lata 2025-2030. 
     </footer>
   </div>
   <script src="script.js"></script>
