@@ -1,27 +1,108 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Niedziela handlowa</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Najdziwniejsza strona na świecie</title>
+
+  <!-- Fredoka One -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="container">
-    <div class="led-strip"></div>
-    <h1>Następna niedziela będzie:</h1>
-    <div id="result">...</div>
+  <div class="page">
+    <header class="site-header">
+      <h1>Najdziwniejsza strona na świecie</h1>
+      <div class="controls">
+        <label class="toggle">
+          <input id="themeToggle" type="checkbox" />
+          <span class="slider"></span>
+          <span class="label-text">Tryb ciemny</span>
+        </label>
+      </div>
+    </header>
 
-    <div id="countdown" class="countdown">
-      <div><span id="days">0</span><label>Dni</label></div>
-      <div><span id="hours">0</span><label>Godziny</label></div>
-      <div><span id="minutes">0</span><label>Minuty</label></div>
-      <div><span id="seconds">0</span><label>Sekundy</label></div>
-    </div>
+    <main class="container">
+      <nav class="tabs" role="tablist" aria-label="Zakładki">
+        <button class="tab active" data-tab="niedziela" role="tab" aria-selected="true">Niedziela</button>
+        <button class="tab" data-tab="kolko" role="tab" aria-selected="false">Kółko i krzyżyk</button>
+        <button class="tab" data-tab="o-stronie" role="tab" aria-selected="false">O stronie</button>
+      </nav>
 
-    <h2>Lista niedziel handlowych 2025–2030</h2>
-    <div class="sunday-list" id="sundayList"></div>
+      <section class="tab-content">
+        <!-- Zakładka 1: Niedziela -->
+        <article id="niedziela" class="panel active" role="tabpanel" aria-hidden="false">
+          <h2>Następna niedziela handlowa będzie:</h2>
+
+          <div class="frame">
+            <div class="countdown" id="countdown">
+              <div class="time-part"><span class="number" id="cd-days">--</span><span class="unit">dni</span></div>
+              <div class="separator">:</div>
+              <div class="time-part"><span class="number" id="cd-hours">--</span><span class="unit">godz</span></div>
+              <div class="separator">:</div>
+              <div class="time-part"><span class="number" id="cd-mins">--</span><span class="unit">min</span></div>
+              <div class="separator">:</div>
+              <div class="time-part"><span class="number" id="cd-secs">--</span><span class="unit">sek</span></div>
+            </div>
+
+            <div class="next-date" id="nextDateText">Ładowanie...</div>
+            <details class="dates-list">
+              <summary>Lista niedziel handlowych (2025–2030)</summary>
+              <ul id="niedzieleList" class="list"></ul>
+            </details>
+          </div>
+        </article>
+
+        <!-- Zakładka 2: Kółko i krzyżyk -->
+        <article id="kolko" class="panel" role="tabpanel" aria-hidden="true">
+          <h2>Kółko i krzyżyk</h2>
+          <div class="game-frame">
+            <div class="game-controls">
+              <label>Tryb:
+                <select id="gameMode">
+                  <option value="ai">Gracz vs Bot</option>
+                  <option value="pvp">Gracz vs Gracz</option>
+                </select>
+              </label>
+              <label>Gracz 1:
+                <select id="player1Mark">
+                  <option value="X">X</option>
+                  <option value="O">O</option>
+                </select>
+              </label>
+              <button id="newGameBtn" class="btn">Nowa gra</button>
+            </div>
+
+            <div id="gameStatus" class="game-status">Kliknij pole, aby zacząć</div>
+
+            <div class="board" id="board" role="grid" aria-label="Plansza kółko i krzyżyk">
+              <!-- 9 pól -->
+              <div class="cell" data-index="0" role="button" tabindex="0"></div>
+              <div class="cell" data-index="1" role="button" tabindex="0"></div>
+              <div class="cell" data-index="2" role="button" tabindex="0"></div>
+              <div class="cell" data-index="3" role="button" tabindex="0"></div>
+              <div class="cell" data-index="4" role="button" tabindex="0"></div>
+              <div class="cell" data-index="5" role="button" tabindex="0"></div>
+              <div class="cell" data-index="6" role="button" tabindex="0"></div>
+              <div class="cell" data-index="7" role="button" tabindex="0"></div>
+              <div class="cell" data-index="8" role="button" tabindex="0"></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Zakładka 3: O stronie -->
+        <article id="o-stronie" class="panel" role="tabpanel" aria-hidden="true">
+          <h2>O tej stronie</h2>
+          <p>Estetyczna demonstracyjna strona z licznikiem do najbliższej niedzieli handlowej (lista 2025–2030) oraz grą kółko i krzyżyk. Wszystkie napisy są w czcionce Fredoka One.</p>
+          <p>Wygląd: prosty, przyjazny, responsywny. Możesz zmieniać tryb jasny/ciemny suwakiem w nagłówku.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <small>© Najdziwniejsza strona — zbudowane z miłością (i trochę kodu).</small>
+    </footer>
   </div>
 
   <script src="script.js"></script>
