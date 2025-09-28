@@ -3,29 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Niedziela Handlowa - Kiedy Zakupy?</title>
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css"> </head>
+  <title>Niedziela Handlowa - Minimalistyczny Kalendarz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
   <div class="container">
-    <div class="led-strip"></div>
-
-    <section id="current-status">
-      <h1>Następna niedziela:</h1>
-      <p id="next-sunday-date" class="small-text"></p>
+    <section id="current-status" class="glass-card">
+      <h1>Status najbliższej niedzieli</h1>
+      <p id="next-sunday-date" class="date-info"></p>
       <div id="result">...</div>
     </section>
     
     <hr class="divider">
 
-    <section id="next-trading-info">
-      <h2>Najbliższa Niedziela Handlowa:</h2>
-      <p id="trading-sunday-date" class="small-text"></p>
+    <section id="next-trading-info" class="glass-card">
+      <h2>Do najbliższej niedzieli handlowej:</h2>
+      <p id="trading-sunday-date" class="date-info"></p>
       <div id="countdown"></div>
     </section>
 
     <footer class="footer">
-      </footer>
+      <a href="https://www.gov.pl/web/rozwoj/ograniczenie-handlu-w-niedziele-i-swieta" target="_blank">Źródło i zasady (gov.pl)</a>
+    </footer>
   </div>
-  <script src="script.js"></script> </body>
+  <script src="script.js"></script>
+</body>
 </html>
