@@ -1,18 +1,18 @@
-// Lista niedziel handlowych na lata 2025 - 2030 (format RRRR-MM-DD)
-// Daty 2026-2030 są PRZEWIDYWANE na podstawie obowiązującego prawa.
+// Rozbudowany kalendarz niedziel handlowych na lata 2025 - 2030 (RRRR-MM-DD)
+// Daty przewidziane są na podstawie obecnego prawa.
 const TRADING_SUNDAYS = [
-  // --- 2025 ---
-  '2025-01-26', // Ostatnia w styczniu
+  // --- 2025 --- (Aktualne daty na rok bieżący)
+  '2025-01-26', 
   '2025-04-13', // Niedziela Palmowa
-  '2025-04-27', // Ostatnia w kwietniu
-  '2025-06-29', // Ostatnia w czerwcu
-  '2025-08-31', // Ostatnia w sierpniu
-  '2025-12-14', // 2. niedziela przed BN
-  '2025-12-21', // 1. niedziela przed BN
+  '2025-04-27',
+  '2025-06-29',
+  '2025-08-31',
+  '2025-12-14', 
+  '2025-12-21', 
   
   // --- 2026 ---
   '2026-01-25', 
-  '2026-03-29', // Niedziela Palmowa
+  '2026-03-29', 
   '2026-04-26',
   '2026-06-28',
   '2026-08-30',
@@ -21,7 +21,7 @@ const TRADING_SUNDAYS = [
 
   // --- 2027 ---
   '2027-01-31', 
-  '2027-03-21', // Niedziela Palmowa
+  '2027-03-21', 
   '2027-04-25',
   '2027-06-27',
   '2027-08-29',
@@ -30,7 +30,7 @@ const TRADING_SUNDAYS = [
 
   // --- 2028 ---
   '2028-01-30', 
-  '2028-04-09', // Niedziela Palmowa
+  '2028-04-09', 
   '2028-04-30',
   '2028-06-25',
   '2028-08-27',
@@ -39,7 +39,7 @@ const TRADING_SUNDAYS = [
 
   // --- 2029 ---
   '2029-01-28', 
-  '2029-03-25', // Niedziela Palmowa
+  '2029-03-25', 
   '2029-04-29',
   '2029-06-24',
   '2029-08-26',
@@ -48,7 +48,7 @@ const TRADING_SUNDAYS = [
 
   // --- 2030 ---
   '2030-01-27', 
-  '2030-04-14', // Niedziela Palmowa
+  '2030-04-14', 
   '2030-04-28',
   '2030-06-30',
   '2030-08-25',
@@ -56,10 +56,12 @@ const TRADING_SUNDAYS = [
   '2030-12-22',
 ];
 
-// --- FUNKCJE OBSŁUGI DAT (BEZ ZMIAN W LOGICE, TYLKO KOSMETYKA) ---
 
+// --- FUNKCJE POMOCNICZE ---
+
+// Używamy Date do pracy z datami w JS.
 function getNextSundayDate(date = new Date()) {
-  const day = date.getDay(); // 0 = niedziela
+  const day = date.getDay(); 
   const diff = (7 - day) % 7;
   const nextSunday = new Date(date);
   nextSunday.setDate(date.getDate() + diff);
@@ -72,46 +74,48 @@ function isTradingSunday(date) {
   return TRADING_SUNDAYS.includes(formatted);
 }
 
-function getNextTradingSunday(date = new Date()) {
-  let nextSun = getNextSundayDate(date);
-  nextSun.setHours(0, 0, 0, 0);
+function getNextTradingSunday() {
+  const now = new Date();
+  const nowFormatted = now.toISOString().slice(0, 10);
 
-  // Ustawienie max limitu szukania na 6 lat (do 2031) dla bezpieczeństwa
-  const maxYear = new Date().getFullYear() + 6; 
-
-  while (nextSun.getFullYear() <= maxYear) {
-    if (isTradingSunday(nextSun)) {
-      // Sprawdzenie, czy ta handlowa nie jest dzisiaj, ale godzina już minęła
-      const isToday = nextSun.toDateString() === new Date().toDateString();
-      if (!isToday || (isToday && new Date().getHours() < 23)) {
-          return nextSun;
-      }
-    }
-    
-    // Przechodzimy do następnej niedzieli
-    nextSun.setDate(nextSun.getDate() + 7);
+  // Filtrujemy tylko daty w przyszłości (lub dzisiejszą)
+  const futureSundays = TRADING_SUNDAYS.filter(dateStr => dateStr >= nowFormatted);
+  
+  if (futureSundays.length > 0) {
+    const nextDate = new Date(futureSundays[0]);
+    nextDate.setHours(0, 0, 0, 0); 
+    return nextDate;
   }
   return null;
 }
 
-function formatDate(date) {
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+// Funkcja formatująca datę
+function formatDate(date, options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) {
   return new Intl.DateTimeFormat('pl-PL', options).format(date);
 }
 
-// --- FUNKCJE AKTUALIZACJI DOM ---
+// --- LOGIKA WIDOKU I AKTUALIZACJI ---
 
 function updateSundayStatus() {
-  const nextSunday = getNextSundayDate();
+  const now = new Date();
+  const nextSunday = getNextSundayDate(now);
   const isTrading = isTradingSunday(nextSunday);
   const resultDiv = document.getElementById('result');
+  const todayMessage = document.getElementById('today-info');
   
   document.getElementById('next-sunday-date').innerText = formatDate(nextSunday);
   resultDiv.innerText = isTrading ? 'HANDLOWA' : 'NIEHANDLOWA';
   
-  // Dynamiczne klasy dla stylizacji
-  resultDiv.classList.toggle('trading', isTrading);
-  resultDiv.classList.toggle('non-trading', !isTrading);
+  // Dynamiczne klasy dla stylizacji CSS
+  resultDiv.classList.toggle('handlowa', isTrading);
+  resultDiv.classList.toggle('niehandlowa', !isTrading);
+
+  // Dodatkowa informacja, jeśli dziś jest niedziela handlowa
+  if (nextSunday.toDateString() === now.toDateString() && isTrading) {
+      todayMessage.innerText = 'UWAGA: Dziś jest niedziela handlowa!';
+  } else {
+      todayMessage.innerText = '';
+  }
 }
 
 let nextTradingDate = null;
@@ -120,43 +124,75 @@ function updateCountdown() {
   
   const now = new Date().getTime();
   const targetTime = nextTradingDate.getTime();
-  const diff = targetTime - now;
+  let diff = targetTime - now;
 
-  const countdownElement = document.getElementById('countdown');
-
+  // Wstrzymanie licznika, jeśli minął czas
   if (diff <= 0) {
-    countdownElement.innerHTML = "To **już dziś**! Czas na zakupy.";
-    // Koniec odliczania, zatrzymaj interwał
+    document.getElementById('countdown').innerHTML = `<span class="value" style="font-size: 1.5rem;">ZAKUPY TERAZ!</span>`;
     clearInterval(window.countdownInterval); 
     return;
   }
-
+  
+  // Zaawansowane obliczenia czasu
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  diff -= days * (1000 * 60 * 60 * 24);
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  diff -= hours * (1000 * 60 * 60);
+  const minutes = Math.floor(diff / (1000 * 60));
+  diff -= minutes * (1000 * 60);
+  const seconds = Math.floor(diff / 1000);
 
-  countdownElement.innerHTML = 
-    `Zostało: <strong>${days}</strong> dni ${hours}h ${minutes}m ${seconds}s`;
+  // Dynamiczne aktualizowanie poszczególnych spanów
+  document.getElementById('days-val').innerText = days;
+  document.getElementById('hours-val').innerText = hours;
+  document.getElementById('minutes-val').innerText = minutes;
+  document.getElementById('seconds-val').innerText = seconds;
 }
 
-// Inicjalizacja
+
+function generateTradingList() {
+    const listElement = document.getElementById('trading-list');
+    listElement.innerHTML = '';
+    
+    const now = new Date();
+    const nowFormatted = now.toISOString().slice(0, 10);
+    let count = 0;
+    
+    // Pokażemy maksymalnie 15 najbliższych dat
+    TRADING_SUNDAYS.forEach(dateStr => {
+        if (dateStr >= nowFormatted && count < 15) {
+            const date = new Date(dateStr);
+            const formattedDate = formatDate(date, { day: 'numeric', month: 'long', year: 'numeric' });
+            
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `<span>${formattedDate}</span> <strong>${date.getFullYear()}</strong>`;
+            listElement.appendChild(listItem);
+            count++;
+        }
+    });
+
+    if (count === 0) {
+         listElement.innerHTML = `<li>Brak nadchodzących niedziel handlowych w kalendarzu.</li>`;
+    }
+}
+
+
+// --- INICJALIZACJA ---
+
 document.addEventListener('DOMContentLoaded', () => {
   
-  // 1. Ustawienie statusu najbliższej niedzieli
   updateSundayStatus();
   
-  // 2. Ustalenie daty najbliższej handlowej i jej wyświetlenie
   nextTradingDate = getNextTradingSunday();
   
   if (nextTradingDate) {
       document.getElementById('trading-sunday-date').innerText = formatDate(nextTradingDate);
       
-      // 3. Uruchomienie licznika
       updateCountdown();
-      window.countdownInterval = setInterval(updateCountdown, 1000); // Zapisujemy interwał
+      window.countdownInterval = setInterval(updateCountdown, 1000);
   } else {
-      document.getElementById('trading-sunday-date').innerText = "Brak dat w kalendarzu na najbliższe lata.";
-      document.getElementById('countdown').innerHTML = "Kalendarz niedziel handlowych wymaga aktualizacji.";
+      document.getElementById('trading-sunday-date').innerText = "Brak nadchodzącej niedzieli handlowej w kalendarzu.";
   }
+  
+  generateTradingList();
 });
