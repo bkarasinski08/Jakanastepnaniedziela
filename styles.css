@@ -1,130 +1,132 @@
 :root {
-  --bg-color: #0c0c10; /* Ciemniejszy, głębszy kolor */
-  --card-bg: rgba(30, 30, 38, 0.95); /* Ciemniejsze tło karty z mniejszym blur */
-  --accent: #0fffc1;
-  --text-color: #f0f0f0;
-  --shadow-color: rgba(0, 255, 170, 0.4);
-  --pulse-color-light: rgba(0, 255, 170, 0.1);
-  --pulse-color-strong: rgba(0, 255, 170, 0.4);
+    --bg-color: #f0f4f8; /* Jasne tło */
+    --main-accent: #007aff; /* Niebieski akcent (iOS Blue) */
+    --secondary-accent: #00c7e0; /* Akcent turkusowy */
+    --text-color: #1c1c1e;
+    --glass-bg: rgba(255, 255, 255, 0.6); /* Półprzezroczyste białe tło */
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-strong: rgba(0, 0, 0, 0.15);
 }
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 body {
-  background: var(--bg-color);
-  color: var(--text-color);
-  font-family: 'Comfortaa', cursive;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  overflow: auto; /* Zmiana na auto, jeśli treść wymaga przewijania */
+    background: linear-gradient(135deg, var(--bg-color), #d0d8e2);
+    color: var(--text-color);
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
 }
-/* Subtelniejsza animacja tła */
-body::before {
-  content: '';
-  position: fixed; /* Zmiana na fixed, aby tło nie ruszało się przy przewijaniu */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at center, #1a1a20 0%, #0c0c10 100%);
-  z-index: -2;
-}
+
 .container {
-  position: relative;
-  background: var(--card-bg);
-  border-radius: 30px;
-  padding: 50px 40px;
-  max-width: 450px;
-  width: 90%;
-  text-align: center;
-  box-shadow: 0 0 40px var(--shadow-color);
-  backdrop-filter: blur(15px);
-  margin: 20px 0; /* Dodanie marginesu, by nie kleiło się do krawędzi */
+    position: relative;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    border-radius: 25px;
+    /* Usuwamy główne tło dla container, ponieważ mamy karty glass-card */
 }
-.led-strip {
-  /* ... (bez zmian - animowany pasek na górze) ... */
-  position: absolute;
-  top: -8px;
-  left: 10%;
-  width: 80%;
-  height: 4px;
-  background: linear-gradient(90deg, var(--accent), #00b3ff, var(--accent));
-  background-size: 300% 100%;
-  animation: led-glow 4s linear infinite;
-  border-radius: 10px;
+
+/* KARTA 'AERO GLASS' */
+.glass-card {
+    background: var(--glass-bg);
+    border-radius: 20px;
+    padding: 30px 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px var(--shadow-light), 0 0 5px var(--shadow-light) inset;
+    backdrop-filter: blur(15px); /* KLUCZOWY EFEKT SZKŁA */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-@keyframes led-glow {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
+.glass-card:hover {
+    box-shadow: 0 15px 40px var(--shadow-strong), 0 0 10px rgba(0, 122, 255, 0.2) inset;
+    transform: translateY(-2px);
 }
 
 h1 {
-  font-size: 1.6rem;
-  margin-bottom: 5px;
-  letter-spacing: 1px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--main-accent);
+    margin-bottom: 5px;
 }
 h2 {
-  font-size: 1.2rem;
-  margin-top: 20px;
-  margin-bottom: 5px;
-  color: #aaa;
-}
-#result {
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--accent);
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  text-shadow: 0 0 15px var(--accent);
-  animation: pulse 2s infinite;
-}
-.small-text {
-  font-size: 0.9rem;
-  color: #888;
-  margin-bottom: 15px;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--text-color);
+    margin-top: 15px;
+    margin-bottom: 5px;
 }
 
-/* Nowy, bardziej subtelny styl dla licznika */
+/* Wyróżnienie wyniku */
+#result {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--text-color);
+    margin-top: 10px;
+    text-transform: uppercase;
+    animation: fade-in 1s ease-out;
+}
+#result.trading {
+    color: var(--secondary-accent); /* Inny kolor dla HANDLOWA */
+    text-shadow: 0 0 15px rgba(0, 199, 224, 0.3);
+    animation: trading-pulse 2s infinite;
+}
+#result.non-trading {
+    color: var(--text-color);
+}
+
+.date-info {
+    font-size: 0.9rem;
+    color: #6a6a6e;
+    font-weight: 300;
+}
+
+/* Styl Licznika Czasu */
 #countdown {
-  font-size: 1.4rem;
-  color: var(--text-color);
-  background: rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  border-radius: 8px;
-  border-left: 3px solid var(--accent);
-  margin-top: 15px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 15px;
+    padding: 10px 0;
+    color: var(--main-accent);
 }
 #countdown strong {
-  color: var(--accent);
-  font-size: 1.6rem;
-  text-shadow: 0 0 5px var(--shadow-color);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-color);
+    text-shadow: 0 2px 4px var(--shadow-light);
 }
+
+/* Separator */
 .divider {
-  border: none;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 170, 0.2), transparent);
-  margin: 30px 0;
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
+    margin: 30px 0;
 }
 
-/* Poprawiona animacja pulsowania */
-@keyframes pulse {
-  0% { text-shadow: 0 0 5px var(--pulse-color-light); }
-  50% { text-shadow: 0 0 25px var(--pulse-color-strong); }
-  100% { text-shadow: 0 0 5px var(--pulse-color-light); }
+/* Animacje */
+@keyframes trading-pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.02); opacity: 0.9; }
+    100% { transform: scale(1); opacity: 1; }
+}
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsywność */
-@media (max-width: 480px) {
-  .container {
-    padding: 30px 20px;
-  }
-  h1 { font-size: 1.4rem; }
-  h2 { font-size: 1.1rem; }
-  #result { font-size: 2.5rem; }
-  #countdown { font-size: 1.2rem; }
-  #countdown strong { font-size: 1.4rem; }
+/* Stopka */
+.footer {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 20px;
+}
+.footer a {
+    color: var(--main-accent);
+    text-decoration: none;
 }
