@@ -1,0 +1,53 @@
+/* styles.css - ciemny motyw, jedna czcionka */
+:root{
+  --bg: #0b0e12;
+  --panel: #0f1720;
+  --muted: #9aa6b2;
+  --accent: #8ab4ff;
+  --glass: rgba(255,255,255,0.03);
+  --radius: 14px;
+  --stroke-size: 2px;
+  font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+* { box-sizing: border-box; }
+html,body { height:100%; margin:0; background:linear-gradient(180deg,#050608 0%, var(--bg) 100%); color: #e6eef6; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+.container { max-width: 980px; margin: 40px auto; padding: 28px; }
+.hero { text-align: center; margin-bottom: 26px; }
+.title {
+  font-weight: 800; font-size: clamp(28px, 5vw, 56px);
+  margin: 8px 0 6px; line-height: 1.05; letter-spacing: -0.02em;
+  color: #ffffff;
+  -webkit-text-stroke: var(--stroke-size) #000000;
+  text-stroke: var(--stroke-size) #000000;
+  text-shadow: 0 0 0 rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.6);
+}
+.subtitle { margin: 0; color: var(--muted); font-weight: 300; font-size: 14px; }
+.tabs { display:flex; gap: 12px; justify-content:center; margin: 22px 0; flex-wrap:wrap; }
+.tab {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 12px 18px; border-radius: 12px; min-width: 120px;
+  cursor: pointer; color: #e6eef6; font-weight: 600;
+  box-shadow: 0 6px 18px rgba(2,6,10,0.6);
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.tab:hover:not(:disabled) { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(2,6,10,0.7); }
+.tab:active { transform: translateY(-1px); }
+.tab[disabled] { opacity: 0.36; cursor: default; filter: grayscale(10%); }
+.card {
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.03);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 8px 30px rgba(2,6,10,0.7);
+}
+.intro { margin-top: 12px; color: var(--muted); }
+.footer { margin-top: 30px; text-align:center; color: rgba(230,238,246,0.6); }
+@media (max-width:600px){ .container { padding: 18px; } .tab { min-width: 100px; padding: 10px 14px; font-size: 14px; } }
+.tab.opening { animation: pulse 700ms ease; }
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 6px 18px rgba(2,6,10,0.6); }
+  50% { transform: scale(1.04); box-shadow: 0 22px 44px rgba(2,6,10,0.75); }
+  100% { transform: scale(1); box-shadow: 0 6px 18px rgba(2,6,10,0.6); }
+}
