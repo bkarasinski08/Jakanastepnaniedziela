@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Najdziwniejsza strona internetowa</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="dark">
+  <!-- Theme toggle -->
+  <div class="theme-toggle" aria-hidden="false">
+    <label class="switch" title="Przełącz motyw">
+      <input type="checkbox" id="themeSwitcher" aria-label="Przełącz motyw jasny/ciemny">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <main class="wrap">
+    <section class="center-card" id="mainCard" role="main" aria-labelledby="mainTitle">
+      <h1 id="mainTitle" class="title">Najdziwniejsza strona internetowa</h1>
+
+      <nav class="tabs" role="tablist" aria-label="Zakładki">
+        <button class="tab" id="tab-godzina" role="tab" aria-controls="godzina">🕒 Godzina</button>
+        <button class="tab" id="tab-gra" role="tab" aria-controls="gra">🎮 Gra X i O</button>
+      </nav>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© <span id="year"></span> Najdziwniejsza strona internetowa</small>
+  </footer>
+
+  <canvas id="confettiCanvas" style="position:fixed;left:0;top:0;pointer-events:none;z-index:1200;"></canvas>
+
+  <audio id="snd-click"></audio>
+  <audio id="snd-win"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
